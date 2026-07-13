@@ -1,19 +1,14 @@
-resource "aws_s3_bucket" "audit_log" {
-  bucket        = "company-audit-logs-sandbox"
-  force_destroy = true
-
-  tags = {
-    Environment = "sandbox"
-    ManagedBy   = "Terraform"
-  }
+provider "aws" {
+  region = "us-east-1"
 }
 
-resource "aws_instance" "app_server" {
-  ami           = "ami-0c55b159cbfafe1f0"
-  instance_type = "t3.micro"
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "2.78.0" # Archaic version
 
-  tags = {
-    Name        = "sandbox-app-server"
-    Environment = "sandbox"
-  }
+  name = "legacy-vpc"
+  cidr = "10.0.0.0/16"
+
+  # Obsolete parameters or old variable interpolation types
+  enable_vpn_gateway = "${var.legacy_boolean_string}" 
 }
