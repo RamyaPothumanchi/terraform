@@ -1,11 +1,11 @@
-module "my_root_module" {
-  source = "../../" # Dynamic local pointer to your root module layout
+module "root_infrastructure_test" {
+  # Points to the root level directory containing the resource blocks above
+  source = "../../"
+
+  aws_region  = "us-west-2"
+  environment = "testing-suite"
 }
 
-# Add a third party open-source module that will get upgraded dynamically
-module "dynamic_test" {
-  source  = "terraform-aws-modules/dynamic-ssm-parameter/aws"
-  version = "1.0.0" # Intentional outdated version string
-  name    = "ai-test"
-  value   = "showcase"
+output "test_suite_bucket_arn" {
+  value = module.root_infrastructure_test.bucket_arn
 }
